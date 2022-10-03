@@ -11,9 +11,66 @@ Implementar la clase LinkedList, definiendo los siguientes métodos:
   En caso de que la búsqueda no arroje resultados, search debe retornar null.
 */
 
-function LinkedList() {}
+function LinkedList() {
+  this._length=0;
+  this.head=null;
+}
+LinkedList.prototype.add=function(value){
+  var current=this.head;
+  var nodo=new Node(value);
+  if(current===null){
+    console.log("Esta vacio");
+    this.head=nodo;
+    this._length++;
+  }
+  else{
+    while(current.next!==null){
+      current = current.next;
+    }
+    current.next=nodo;
+    this._length++;
+  }
+};
 
-function Node(value) {}
+LinkedList.prototype.remove=function(){
+  var current=this.head;//actual
+  if(!this.head){return false}
+  if(this.head.next===null){
+    let aux=this.head;
+    this.head=null;
+    return aux.value;
+  }
+  else{
+    let currente =this.head;
+    while(current.next.next!==null){
+      current=current.next;
+    }
+    let aux =current.next.value;
+    current.next=null;
+    return aux;
+  }
+};
+LinkedList.prototype.search=function(value){
+  if(!this.head){return null}
+  var current=this.head;
+  while(current!==null){
+    if(typeof value==="function"){
+      if(value(current.value)===true){
+        return current.value;
+      }
+    }
+    if(current.value===value){return current.value}
+    else{
+      current=current.next;
+    }
+  }
+  return null;
+};
+
+function Node(value) {
+  this.value=value;
+  this.next=null;
+}
 
 /*
 Implementar la clase HashTable.
@@ -30,7 +87,37 @@ La clase debe tener los siguientes métodos:
 Ejemplo: supongamos que quiero guardar {instructora: 'Ani'} en la tabla. Primero puedo chequear, con hasKey, si ya hay algo en la tabla con el nombre 'instructora'; luego, invocando set('instructora', 'Ani'), se almacenará el par clave-valor en un bucket específico (determinado al hashear la clave)
 */
 
-function HashTable() {}
+class HashTable {
+  constructor() {
+    this.bucket = [];
+    this.numBuckets = 35;
+  }
+  hash(key) {
+    var total=0;
+    for(let i=0; i<key.length;i++){
+      total=total+ key.charCodeAt(i);
+    }
+    return total%this.numBuckets
+  }
+  set(key,value) {
+    var index=this.hash(key);
+    if(typeof key!=="string"){
+      throw new TypeError("Keys must be strings")
+    }
+    if(!this.bucket[index]){
+      this.bucket[index]={}
+    }
+    this.bucket[index][key]=value;
+  }
+  get(key) {
+    var index=this.hash(key);
+    return this.bucket[index][key]
+  }
+  hasKey(key) {
+    var index=this.hash(key)
+    return this.bucket[index].hasOwnProperty(key)
+  }
+}
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------

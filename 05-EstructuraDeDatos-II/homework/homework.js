@@ -114,8 +114,8 @@ class HashTable {
     return this.bucket[index][key]
   }
   hasKey(key) {
-    var index=this.hash(key)
-    return this.bucket[index].hasOwnProperty(key)
+    var index=this.hash(key);
+    return this.bucket[index].hasOwnProperty(key);
   }
 }
 
